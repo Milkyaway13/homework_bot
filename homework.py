@@ -54,7 +54,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    """Запрос к эндпоинту и получение ответа"""
+    """Запрос к эндпоинту и получение ответа."""
     payload = {"from_date": timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=payload)
@@ -73,7 +73,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Функция проверки получения ответа от API"""
+    """Функция проверки получения ответа от API."""
     try:
         homeworks = response["homeworks"]
         if not isinstance(homeworks, list):
@@ -86,7 +86,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Функция для получения информации о конкретной домашке"""
+    """Функция для получения информации о конкретной домашке."""
     try:
         homework_name = homework["homework_name"]
         status = homework["status"]
