@@ -69,14 +69,15 @@ def get_api_answer(timestamp):
             logging.error(message)
             raise ResponseStatusError(message)
         return response.json()
-    except JSONDecodeError as error:
-        message = f"{error}: Полученный ответ не соовтетствует формату JSON"
-        logging.error(message)
-        raise JsonFormatError(message)
 
     except requests.exceptions.RequestException as error:
         logging.error(f"Сбой в работе программы: {error}")
         return None
+
+    except JSONDecodeError as error:
+        message = f"{error}: Полученный ответ не соовтетствует формату JSON"
+        logging.error(message)
+        raise JsonFormatError(message)
 
 
 def check_response(response):
