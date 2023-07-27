@@ -9,5 +9,11 @@ class TelegramMessageError(Exception):
 
 @dataclass
 class ResponseStatusError(Exception):
-    """Ошибка при получении статуса кода"""
+    """Ошибка при получении статуса кода."""
+    message: str
+
+
+@dataclass
+class JsonFormatError(Exception):
+    """Ошибка при получении неверного формата данных."""
     message: str

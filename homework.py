@@ -1,13 +1,16 @@
 import os
 import sys
 import time
-from http import HTTPStatus
 import logging
+from http import HTTPStatus
+
 import requests
+from json import JSONDecodeError
 import telegram
 from dotenv import load_dotenv
 
-from exceptions import TelegramMessageError, ResponseStatusError
+from exceptions import (
+    TelegramMessageError, ResponseStatusError, JsonFormatError)
 
 
 load_dotenv()
@@ -47,7 +50,7 @@ def send_message(bot, message):
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
         logging.debug("Сообщение отправлено.")
-    except Exception as error:
+    except telegram.error.Unauthorized as error:
         message = f"Ошибка при отправке сообщения в телеграм: {error}"
         logging.error(message)
         raise TelegramMessageError(message)
@@ -66,6 +69,10 @@ def get_api_answer(timestamp):
             logging.error(message)
             raise ResponseStatusError(message)
         return response.json()
+    except JSONDecodeError as error:
+        message = f"{error}: Полученный ответ не соовтетствует формату JSON"
+        logging.error(message)
+        raise JsonFormatError(message)
 
     except requests.exceptions.RequestException as error:
         logging.error(f"Сбой в работе программы: {error}")
